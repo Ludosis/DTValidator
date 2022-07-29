@@ -13,9 +13,21 @@ namespace DTValidator {
 			set { EditorPrefs.SetBool("DTValidatorPreferences::ValidateSceneAutomatically", value); }
 		}
 
+#if UNITY_2018_3_OR_NEWER
+		[SettingsProvider]
+		public static SettingsProvider DTSettingsProvider() {
+			var provider = new SettingsProvider("Preferences/DTValidator", SettingsScope.User) {
+				guiHandler = (searchContext) => {
+					ValidateSceneAutomatically = EditorGUILayout.Toggle("Validate Scene Automatically", ValidateSceneAutomatically);
+				}
+			};
+			return provider;
+		}
+#else
 		[PreferenceItem("DTValidator")]
 		public static void PreferencesGUI() {
 			ValidateSceneAutomatically = EditorGUILayout.Toggle("Validate Scene Automatically", ValidateSceneAutomatically);
 		}
+#endif
 	}
 }
