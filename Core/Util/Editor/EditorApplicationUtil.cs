@@ -28,13 +28,17 @@ namespace DTValidator.Internal {
 
 		static EditorApplicationUtil() {
 
-            #if UNITY_2018_1_OR_NEWER
-                EditorApplication.hierarchyChanged += HierarchyChanged;
-            #else
-                EditorApplication.hierarchyWindowChanged += HierarchyChanged;
-            #endif
+#if UNITY_2018_1_OR_NEWER
+            EditorApplication.hierarchyChanged += HierarchyChanged;
+#else
+            EditorApplication.hierarchyWindowChanged += HierarchyChanged;
+#endif //UNITY_2018_1_OR_NEWER
 
-            SceneView.onSceneGUIDelegate += OnSceneGUI;
+#if UNITY_2019_1_OR_NEWER
+			SceneView.duringSceneGui += OnSceneGUI;
+#else
+			SceneView.onSceneGUIDelegate += OnSceneGUI;
+#endif //UNITY_2019_1_OR_NEWER
 			Undo.postprocessModifications += PostProcessModifications;
 		}
 
